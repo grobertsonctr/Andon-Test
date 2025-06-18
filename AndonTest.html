@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Andon Reporting System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            margin: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Andon Reporting System</h2>
+    <form id="andonForm">
+        <label for="submitter">Submitter Name:</label>
+        <input type="text" id="submitter" name="submitter" required>
+
+        <label for="project">Project:</label>
+        <input type="text" id="project" name="project" required>
+
+        <label for="department">Send To:</label>
+        <input type="text" id="department" name="department" required>
+
+        <label for="priority">Priority Level:</label>
+        <select id="priority" name="priority" required>
+            <option value="">Select priority</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+        </select>
+
+        <label for="details">Additional Details:</label>
+        <textarea id="details" name="details" rows="5" required></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('andonForm');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const data = {
+                submitter: form.submitter.value,
+                project: form.project.value,
+                department: form.department.value,
+                priority: form.priority.value,
+                details: form.details.value
+            };
+
+            fetch('https://script.google.com/macros/s/AKfycbyTihMislwrh0ymJpkSOIteQVTfUM8FvTyd0vNP7QgDPsTzyyAhmNcPZBiRF1Dc4wbztw/exec', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert('Form submitted successfully!');
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Submission failed. See console for details.');
+            });
+        });
+    </script>
+</body>
+</html>
